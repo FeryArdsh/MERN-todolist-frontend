@@ -1,48 +1,27 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import logo from '@/public/logo.svg';
-import Input from '@/components/Input';
-import Button from '@/components/Button';
+import Header from '@/components/Header';
+import Task from '@/components/Task';
+import { HiPlus } from 'react-icons/hi';
 
-export default function Home() {
+const Home = () => {
   return (
-    <>
-      <Head>
-        <title>Login</title>
-        <meta
-          name="description"
-          content="Todo List, rencanakan kegiatanmu dengan catatan sederhana"
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/logofavicon.ico" />
-      </Head>
-      <main className="flex-center flex-col min-h-screen gap-4 px-4 max-w-sm mx-auto">
-        <div className="flex-center flex-col">
-          <Image src={logo} alt="Logo" />
-          <h1 className="text-center font-bold">Selamat Datang</h1>
+    <main className="relative min-h-screen overflow-hidden">
+      <Header />
+      <div className="mt-52 flex items-center flex-col gap-7">
+        <div className="flex justify-between items-end w-full">
+          <span className="ml-10">2 Hail</span>
+          <button className="bg-primary rounded-l-full shadow-[0_4px_10px_rgb(0,0,0,0.25)] flex items-center px-3 py-2 text-xs">
+            <HiPlus /> Tambah Kegiatan
+          </button>
         </div>
-        <section className="text-center">
-          <h6>Rencanakan kegiatanmu.</h6>
-          <p className="text-xs">
-            Satu rencana kecil, satu langkah besar menuju kesuksesan.
-          </p>
-        </section>
-        <section className="flex-center flex-col w-full mt-4">
-          <h2>Login</h2>
-          <form className="flex flex-col w-11/12 gap-3 mt-4">
-            <Input placeholder="Username" />
-            <Input placeholder="Password" />
-            <span className="underline text-zinc-400 text-sm">
-              Lupa Password?
-            </span>
-            <Button text="Masuk" type="submit" />
-            <h6 className="text-center">
-              Belum punya akun?{' '}
-              <span className="underline text-secondary text-sm">Daftar</span>
-            </h6>
-          </form>
-        </section>
-      </main>
-    </>
+        <Task />
+        <Task />
+        <Task />
+        <Task />
+        <Task />
+        <Task />
+      </div>
+    </main>
   );
-}
+};
+
+export default Home;
