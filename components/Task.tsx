@@ -11,9 +11,7 @@ type taskPropsType = setOpenModalType & taskType;
 const Task = ({
   value,
   done,
-  username,
   created,
-  updated,
   _id,
   setOpenModal,
   setGetId,
