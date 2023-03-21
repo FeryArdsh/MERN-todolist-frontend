@@ -1,22 +1,31 @@
 import Router from 'next/router';
 import { GoSearch } from 'react-icons/go';
 import { IoCalendarClearSharp, IoLogOutOutline } from 'react-icons/io5';
-const Header = () => {
+
+type headerPropsType = {
+  username: string;
+  notyet: number;
+};
+
+const Header = ({ username, notyet }: headerPropsType) => {
   const logout = () => {
+    localStorage.clear();
     Router.push('login');
   };
   return (
     <header className="absolute w-full top-4 shadow-[0_0_19px_3px_rgb(0,0,0,0.14)] px-4 py-2 rounded-md bg-white">
       <span className="flex text-zinc-400 items-center gap-2 justify-end">
-        <IoCalendarClearSharp /> 23 Juni 2023
+        <IoCalendarClearSharp /> {new Date().toLocaleDateString()}
       </span>
       <div className="flex items-center gap-4">
-        <h3>Halo, Fery</h3>
+        <h3>Halo, {username}</h3>
         <span className="text-xl hover:text-2xl duration-300" onClick={logout}>
           <IoLogOutOutline />
         </span>
       </div>
-      <span className="text-secondary text-xs">2 kegiatan belum selesai</span>
+      <span className="text-secondary text-xs">
+        {notyet} kegiatan belum selesai
+      </span>
       <div className="relative flex w-full flex-wrap items-stretch my-3">
         <span className="z-10 h-full font-normal absolute text-center text-slate-300 bg-transparent rounded text-base items-center justify-center w-8 pl-3 py-3.5">
           <GoSearch />

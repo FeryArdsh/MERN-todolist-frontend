@@ -1,32 +1,63 @@
 import Header from '@/components/Header';
 import Task from '@/components/Task';
+import AddTask from '@/components/AddTask';
+import { useState, useEffect } from 'react';
 import { FETCH_SERVICE } from '@/utils/fetchApi';
 import { taskType } from '@/utils/typeTask';
 import { HiPlus } from 'react-icons/hi';
 import { useQuery } from 'react-query';
+import { BeatLoader } from 'react-spinners';
 
 const Home = () => {
-  const { isLoading, isError, data } = useQuery('todo', FETCH_SERVICE.getTodo);
-  if (isLoading) {
-    return <div>Loading</div>;
-  }
-  if (isError) {
-    return <div>Error</div>;
-  }
-  const username = JSON.parse(localStorage.getItem('user') || '');
+  const { isLoading, data } = useQuery('todo', FETCH_SERVICE.getTodo);
+  const [openModal, setOpenModal] = useState(false);
+  const [getId, setGetId] = useState('');
+  const [localUser, setLocalUser] = useState({ username: '' });
+
+  const handleClickModal = () => {
+    setOpenModal((e) => !e);
+  };
+
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user) {
+      setLocalUser(JSON.parse(localStorage.getItem('user') || '{}'));
+    }
+  }, []);
+
   const getTask = data?.data.filter(
-    (task: any) => task.username == username.username
+    (task: any) => task.username == localUser.username
   );
+  const getIsDone = getTask?.filter((task: any) => task.done === false);
   return (
     <main className="relative min-h-screen overflow-hidden">
-      <Header />
+      {openModal && (
+        <AddTask
+          setOpenModal={setOpenModal}
+          username={localUser?.username}
+          getId={getId}
+          setGetId={setGetId}
+        />
+      )}
+      <Header
+        username={localUser?.username || 'Anonymouse'}
+        notyet={getIsDone?.length || 0}
+      />
       <div className="mt-52 flex items-center flex-col gap-7">
         <div className="flex justify-between items-end w-full">
           <span className="ml-10">{getTask?.length} Hail</span>
-          <button className="bg-primary rounded-l-full shadow-[0_4px_10px_rgb(0,0,0,0.25)] flex items-center px-3 py-2 text-xs">
+          <button
+            className="bg-primary rounded-l-full shadow-[0_4px_10px_rgb(0,0,0,0.25)] flex items-center px-3 py-2 text-xs hover:bg-primary/75"
+            onClick={handleClickModal}
+          >
             <HiPlus /> Tambah Kegiatan
           </button>
         </div>
+        {isLoading && (
+          <div className="mx-auto">
+            <BeatLoader color="#C86D00" />
+          </div>
+        )}
         {getTask?.map((item: taskType) => (
           <Task
             key={item._id}
@@ -36,6 +67,8 @@ const Home = () => {
             username={item.username}
             created={item.created}
             updated={item.updated}
+            setGetId={setGetId}
+            setOpenModal={setOpenModal}
           />
         ))}
       </div>

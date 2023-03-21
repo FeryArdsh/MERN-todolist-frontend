@@ -20,7 +20,7 @@ const Input = ({
   return (
     <>
       <input
-        className="text-black border-zinc-400 border rounded-md py-2 px-3 placeholder:text-zinc-400 placeholder:font-normal"
+        className="text-black border-zinc-400 border rounded-md py-2 px-3 placeholder:text-zinc-400 placeholder:font-normal outline-none"
         placeholder={placeholder}
         type={type}
         {...register(name, {
@@ -28,7 +28,7 @@ const Input = ({
         })}
         {...props}
       />
-      <span className="text-xs text-red-500 -mt-2">{error}</span>
+      <span className="text-xs text-red-700 -mt-2">{error}</span>
     </>
   );
 };

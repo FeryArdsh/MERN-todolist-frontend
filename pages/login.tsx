@@ -2,19 +2,22 @@ import Head from 'next/head';
 import Input from '@/components/Input';
 import Button from '@/components/Button';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Welcome from '@/components/Welcome';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import Router from 'next/router';
+import { BeatLoader } from 'react-spinners';
 
 export default function Login() {
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const onSubmit = async (data: any) => {
+    setLoading(true);
     try {
       const response = await axios.post(
         'https://mern-todolist-backend-production.up.railway.app/auth/login',
@@ -25,10 +28,17 @@ export default function Login() {
       console.log(response);
       localStorage.setItem('user', JSON.stringify(response.data.user));
       Router.push('/');
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
+
+  useEffect(() => {
+    localStorage.removeItem('user');
+  }, []);
+
   return (
     <>
       <Head>
@@ -73,7 +83,14 @@ export default function Login() {
             <span className="underline text-zinc-400 text-sm">
               Lupa Password?
             </span>
-            <Button text="Masuk" type="submit" />
+            {loading ? (
+              <div className="mx-auto">
+                <BeatLoader color="#C86D00" />
+              </div>
+            ) : (
+              <Button text="Masuk" type="submit" />
+            )}
+
             <h6 className="text-center">
               Belum punya akun?{' '}
               <Link
